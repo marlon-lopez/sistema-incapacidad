@@ -1,105 +1,127 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-
-import { inputChangeHandler } from '../App'
 import { UserContext } from '../context/UserContext'
 
-const UserInfo = () => {
-  const [selectedUser, setSeletedUser] = useState({})
-  const { state, updateUser, getUser } = useContext(UserContext)
+function UserInfo() {
+  const [userInfo, setUserInfo] = useState(null)
+  const [newUserInfo, setNewUserInfo] = useState(null)
+  const { state, updateUser } = useContext(UserContext)
 
-  const getUserReq = async (token, setInfo) => {
+  const getUserReq = async (token) => {
+    console.log(token)
+    const { data } = await axios.get('/api/v1/auth/me', {
+      headers: { authorization: `Bearer ${token}` },
+    })
+    setUserInfo(data.data.user)
+    setNewUserInfo(data.data.user)
+    console.log(newUserInfo)
+  }
+
+  const userChangeHandler = (changes) => {
+    setNewUserInfo({ ...newUserInfo, ...changes })
+    console.log(userInfo)
+  }
+
+  const submitHandler = async (event) => {
+    event.preventDefault()
     try {
-      const { data } = await axios.get('/api/v1/auth/me', {
-        headers: { authorization: `Bearer ${token}` },
+      const { data } = await axios.put('/api/v1/auth/update', newUserInfo, {
+        headers: {
+          authorization: `Bearer ${state.token}`,
+          'Content-Type': 'application/json',
+        },
       })
-      setInfo(data.data.user)
-      getUser(data.data.user)
-    } catch (err) {}
+      console.log(data.data.user)
+      updateUser(data.data.user)
+    } catch (err) {
+      console.log(err)
+    }
   }
-  const submitHandler = async (e, token) => {
-    e.preventDefault()
-    console.log(selectedUser)
-    /*  try {
-        const { data } = await axios.post('/api/v1/auth/update', {
-          headers: { authorization: `Bearer ${token}` },
-        })
-        console.log(data)
-      } catch (err) {} */
-  }
-  useEffect(() => {
-    getUserReq(state.token, setSeletedUser)
-  }, [state])
 
+  useEffect(() => {
+    getUserReq(state.token)
+    return
+  }, [state])
   return (
-    <div className='container'>
-      {selectedUser && (
+    <div>
+      {userInfo && (
         <div className='profile'>
-          <div className='div'>
-            <h3>{selectedUser.name}</h3>
-          </div>
+          <h4>{userInfo._id}</h4>
+          <h4>{userInfo.name}</h4>
+          <h4>{userInfo.email}</h4>
+          <h4>{userInfo.job}</h4>
+          <h4>{userInfo.dui}</h4>
+          <h4>{userInfo.code}</h4>
+          <h4>{userInfo.startDate}</h4>
         </div>
       )}
-      <div className='edit-user'>
-        <form onSubmit={submitHandler}>
-          <label>
-            New name
-            <input
-              type='text'
-              name='name'
-              value={selectedUser.name}
-              onChange={(e) =>
-                inputChangeHandler(e, selectedUser, setSeletedUser)
-              }
-            />
-          </label>
-          <label>
-            New email
-            <input
-              type='text'
-              name='email'
-              value={selectedUser.email}
-              onChange={(e) =>
-                inputChangeHandler(e, selectedUser, setSeletedUser)
-              }
-            />
-          </label>
-          <label>
-            New DUI
-            <input
-              type='text'
-              name='dui'
-              value={selectedUser.dui}
-              onChange={(e) =>
-                inputChangeHandler(e, selectedUser, setSeletedUser)
-              }
-            />
-          </label>
-          <label>
-            New Job
-            <input
-              type='text'
-              name='job'
-              value={selectedUser.job}
-              onChange={(e) =>
-                inputChangeHandler(e, selectedUser, setSeletedUser)
-              }
-            />
-          </label>
-          <label>
-            New code
-            <input
-              type='text'
-              name='code'
-              value={selectedUser.code}
-              onChange={(e) =>
-                inputChangeHandler(e, selectedUser, setSeletedUser)
-              }
-            />
-          </label>
-          <button>Login</button>
-        </form>
-      </div>
+      {newUserInfo && (
+        <div className='edit-form'>
+          <form onSubmit={submitHandler}>
+            <label>
+              Email Address
+              <input
+                type='email'
+                name='email'
+                id='email'
+                value={newUserInfo.email}
+                onChange={(e) => {
+                  userChangeHandler({ email: e.target.value })
+                }}
+              />
+            </label>
+            <label>
+              Name
+              <input
+                type='text'
+                name='name'
+                id='name'
+                value={newUserInfo.name}
+                onChange={(e) => {
+                  userChangeHandler({ name: e.target.value })
+                }}
+              />
+            </label>
+            <label>
+              Job
+              <input
+                type='text'
+                name='job'
+                id='job'
+                value={newUserInfo.job}
+                onChange={(e) => {
+                  userChangeHandler({ job: e.target.value })
+                }}
+              />
+            </label>
+            <label>
+              DUI
+              <input
+                type='text'
+                name='dui'
+                id='dui'
+                value={newUserInfo.dui}
+                onChange={(e) => {
+                  userChangeHandler({ dui: e.target.value })
+                }}
+              />
+            </label>
+            <label>
+              code
+              <input
+                type='text'
+                name='code'
+                id='code'
+                value={newUserInfo.code}
+                onChange={(e) => {
+                  userChangeHandler({ code: e.target.value })
+                }}
+              />
+            </label>
+            <button>Update</button>
+          </form>
+        </div>
+      )}
     </div>
   )
 }

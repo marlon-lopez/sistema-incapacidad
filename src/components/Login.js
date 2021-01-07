@@ -28,9 +28,11 @@ const Login = () => {
           id: data.data._id,
           email: data.data.email,
           name: data.data.name,
+          isAdmin: data.data.isAdmin,
         },
         token: data.data.token,
       }
+      console.log(dataParsed)
       logIn(dataParsed)
     } catch (err) {
       console.log(err)

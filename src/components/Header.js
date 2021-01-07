@@ -10,6 +10,19 @@ function Header() {
       <h1>App Name</h1>
       <div>
         <ul>
+          {state.isAuthenticated && (
+            <div className=''>
+              <li>
+                <Link to='/form'>Create Form</Link>
+              </li>
+              <li>
+                <Link to='/myforms'>My Forms</Link>
+              </li>
+              <li>
+                <Link to='/me'>Me</Link>
+              </li>
+            </div>
+          )}
           {!state.isAuthenticated ? (
             <li>
               <Link to='/login'>Login</Link>
@@ -19,16 +32,6 @@ function Header() {
               <Link to='/login' onClick={() => logOut()}>
                 LogOut
               </Link>
-            </li>
-          )}
-          <li>
-            <Link to='/dissability'>Dissability</Link>
-          </li>
-          {!state.isAuthenticated ? (
-            ''
-          ) : (
-            <li>
-              <Link to='/me'>Me</Link>
             </li>
           )}
         </ul>

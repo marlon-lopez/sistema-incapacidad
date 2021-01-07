@@ -11,6 +11,7 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
+      console.log(action.payload.user)
       localStorage.setItem('user', JSON.stringify(action.payload.user))
       localStorage.setItem('token', JSON.stringify(action.payload.token))
       return {
@@ -29,17 +30,8 @@ const reducer = (state, action) => {
         token: null,
       }
     case 'UPDATE_PROFILE':
-      localStorage.setItem('user', JSON.stringify(action.payload.user))
       return {
         ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-      }
-    case 'USER_DETAIL':
-      console.log(action.payload.user)
-      return {
-        ...state,
-        user: action.payload.user,
       }
     case 'REGISTER':
 
@@ -66,12 +58,6 @@ export const UserProvider = ({ children }) => {
       payload: null,
     })
   }
-  const getUser = (data) => {
-    dispatch({
-      type: 'USER_DETAIL',
-      payload: data,
-    })
-  }
 
   const updateUser = (data) => {
     dispatch({
@@ -82,7 +68,7 @@ export const UserProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState)
   return (
-    <UserContext.Provider value={{ state, logIn, logOut, getUser, updateUser }}>
+    <UserContext.Provider value={{ state, logIn, logOut, updateUser }}>
       {children}
     </UserContext.Provider>
   )
