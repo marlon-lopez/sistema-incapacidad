@@ -2,12 +2,13 @@ import React, { useContext, useState } from 'react'
 import axios from 'axios'
 //context
 import { UserContext } from '../context/UserContext'
-
+//actions
+import { logIn } from '../context/actions/UserActions'
 //components
 import { inputChangeHandler } from '../App'
 
 const Login = () => {
-  const { state, logIn } = useContext(UserContext)
+  const { state, dispatch } = useContext(UserContext)
   const [userData, setUserData] = useState({
     email: '',
     password: '',
@@ -15,28 +16,7 @@ const Login = () => {
   })
   const submitHandler = async (e) => {
     e.preventDefault()
-    try {
-      const { data } = await axios.post('/api/v1/auth/login', {
-        email: userData.email,
-        password: userData.password,
-      })
-
-      console.log(data.data)
-      //const parsedData = await {}
-      const dataParsed = await {
-        user: {
-          id: data.data._id,
-          email: data.data.email,
-          name: data.data.name,
-          isAdmin: data.data.isAdmin,
-        },
-        token: data.data.token,
-      }
-      console.log(dataParsed)
-      logIn(dataParsed)
-    } catch (err) {
-      console.log(err)
-    }
+    logIn(dispatch, userData)
   }
 
   return (

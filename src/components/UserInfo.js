@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { UserContext } from '../context/UserContext'
+//actions
+import { updateUser } from '../context/actions/UserActions'
 
 function UserInfo() {
   const [userInfo, setUserInfo] = useState(null)
   const [newUserInfo, setNewUserInfo] = useState(null)
-  const { state, updateUser } = useContext(UserContext)
+  const { state, dispatch } = useContext(UserContext)
 
   const getUserReq = async (token) => {
     console.log(token)
@@ -14,7 +16,6 @@ function UserInfo() {
     })
     setUserInfo(data.data.user)
     setNewUserInfo(data.data.user)
-    console.log(newUserInfo)
   }
 
   const userChangeHandler = (changes) => {
@@ -24,18 +25,7 @@ function UserInfo() {
 
   const submitHandler = async (event) => {
     event.preventDefault()
-    try {
-      const { data } = await axios.put('/api/v1/auth/update', newUserInfo, {
-        headers: {
-          authorization: `Bearer ${state.token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      console.log(data.data.user)
-      updateUser(data.data.user)
-    } catch (err) {
-      console.log(err)
-    }
+    updateUser(dispatch, state.token, newUserInfo)
   }
 
   useEffect(() => {

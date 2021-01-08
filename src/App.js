@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { UserContext } from './context/UserContext'
 
 //components
-import Form from './components/Form'
+import Forms from './components/Forms'
+import MyForms from './components/MyForms'
 import Login from './components/Login'
 import UserInfo from './components/UserInfo'
 import Header from './components/Header'
 import Users from './components/Users'
-import { PrivateRoute } from './components/PrivateRoute'
+import { PrivateRoute, AuthotizedRoute } from './components/PrivateRoute'
 
 export const inputChangeHandler = (e, state, updateState) => {
   updateState({
@@ -19,7 +20,6 @@ export const inputChangeHandler = (e, state, updateState) => {
 }
 function App() {
   const { state } = useContext(UserContext)
-
   return (
     <Router>
       <Header />
@@ -29,11 +29,18 @@ function App() {
       <PrivateRoute path='/me'>
         <UserInfo />
       </PrivateRoute>
-      <PrivateRoute path='/users'>
-        <Users />
-      </PrivateRoute>
-      <PrivateRoute path='/form'>
-        <Form />
+      {state.user && (
+        <>
+          <AuthotizedRoute path='/users' isAdmin={state.user.isAdmin}>
+            <Users />
+          </AuthotizedRoute>
+          <AuthotizedRoute path='/forms'>
+            <Forms />
+          </AuthotizedRoute>
+        </>
+      )}
+      <PrivateRoute path='/myforms'>
+        <MyForms />
       </PrivateRoute>
     </Router>
   )
