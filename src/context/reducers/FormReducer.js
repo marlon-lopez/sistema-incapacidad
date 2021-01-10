@@ -13,7 +13,7 @@ const reducer = (state, action) => {
     case 'GET_ALL_FORMS':
       return {
         ...state,
-        forms: action.payload.forms,
+        forms: action.payload,
       }
     default:
       return {

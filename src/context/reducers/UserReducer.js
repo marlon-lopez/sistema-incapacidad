@@ -8,6 +8,7 @@ const reducer = (state, action) => {
         isAuthenticated: true,
         user: action.payload.user,
         token: action.payload.token,
+        error: null,
       }
     case 'LOGOUT':
       localStorage.removeItem('user')
@@ -17,22 +18,68 @@ const reducer = (state, action) => {
         isAuthenticated: false,
         user: null,
         token: null,
+        error: null,
+        users: null,
       }
     case 'UPDATE_PROFILE':
+      console.log(action.payload)
       return {
         ...state,
-      }
-    case 'LOAD_USER':
-      const user = JSON.parse(localStorage.getItem('user'))
-      const token = JSON.parce(localStorage.getItem('token'))
-      return {
-        ...state,
+        user: action.payload.user,
       }
     case 'REGISTER':
+      localStorage.setItem('user', JSON.stringify(action.payload.user))
+      localStorage.setItem('token', JSON.stringify(action.payload.token))
+      return {
+        isAuthenticated: true,
+        user: action.payload.user,
+        token: action.payload.token,
+        error: null,
+      }
+    case 'ERROR':
+      return {
+        ...state,
+        error: action.payload,
+      }
+    case 'DELETE_MY_USER':
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
+      return {
+        isAuthenticated: false,
+        user: null,
+        token: null,
+        error: null,
+        users: null,
+      }
 
-    case 'DELETE_USER':
+    /*REDUCER FOR ADMINS*/
 
     case 'USER_LIST':
+      return {
+        ...state,
+        users: action.payload,
+      }
+
+    case 'GET_SINGLE_USER':
+      return {
+        ...state,
+        users: action.payload,
+      }
+
+    case 'UPDATE_USER':
+      return {
+        ...state,
+      }
+
+    case 'DELETE_USER': {
+      return {
+        ...state,
+      }
+    }
+    case 'CREATE_USER':
+      return {
+        ...state,
+      }
 
     default:
       return state

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { UserContext } from '../context/UserContext'
 //actions
-import { updateUser } from '../context/actions/UserActions'
+import { updateUser, deleteMyUser } from '../context/actions/UserActions'
 
 function UserInfo() {
   const [userInfo, setUserInfo] = useState(null)
@@ -29,6 +29,8 @@ function UserInfo() {
   }
 
   useEffect(() => {
+    console.log(userInfo)
+    console.log(state)
     getUserReq(state.token)
     return
   }, [state])
@@ -110,6 +112,9 @@ function UserInfo() {
             </label>
             <button>Update</button>
           </form>
+          <button onClick={() => deleteMyUser(dispatch, state.token)}>
+            Eliminar mi Cuenta
+          </button>
         </div>
       )}
     </div>

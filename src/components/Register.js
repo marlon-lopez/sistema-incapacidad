@@ -4,20 +4,25 @@ import styled from 'styled-components'
 //context
 import { UserContext } from '../context/UserContext'
 //actions
-import { logIn } from '../context/actions/UserActions'
+import { registerUser } from '../context/actions/UserActions'
 //components
 import { inputChangeHandler } from '../App'
 
-const Login = () => {
+const Register = () => {
   const { state, dispatch } = useContext(UserContext)
   const [userData, setUserData] = useState({
+    name: '',
     email: '',
     password: '',
+    dui: '',
+    code: '',
+    startDate: '',
+    job: '',
   })
-
   const history = useHistory()
 
   useEffect(() => {
+    console.log(state.error)
     if (state.isAuthenticated) {
       history.push('/')
       return () => {}
@@ -26,40 +31,72 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault()
-    logIn(dispatch, userData)
+    registerUser(dispatch, userData)
   }
 
   return (
-    <LoginContainer>
-      <h1>Login</h1>
+    <RegisterContainer>
+      <h1>Register</h1>
       {state.error && <h3>{state.error}</h3>}
       <StyledFormCard onSubmit={submitHandler}>
-        <label>Correo Electronico</label>
+        <label>Nombre</label>
         <input
           type='text'
-          name='email'
-          id='email'
-          required
+          name='name'
+          id='name'
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
-
+        <label>Correo electronico</label>
+        <input
+          type='email'
+          name='email'
+          id='email'
+          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
+        />
         <label>Contraseña</label>
         <input
           type='password'
           name='password'
           id='password'
-          required
+          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
+        />
+        <label>DUI</label>
+        <input
+          type='text'
+          name='dui'
+          id='dui'
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
 
-        <button>Iniciar sesion</button>
-        <p>{state.isAuthenticated === true ? state.user.name : ' '}</p>
-        <Link to='/register'> Register</Link>
+        <label>Codigo</label>
+        <input
+          type='text'
+          name='code'
+          id='code'
+          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
+        />
+        <label>Fecha Ingreso</label>
+        <input
+          type='Date'
+          name='startDate'
+          id='startDate'
+          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
+        />
+        <label>Puesto</label>
+        <input
+          type='text'
+          name='job'
+          id='job'
+          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
+        />
+        <button>Register</button>
+        <Link to='/login'>¿Ya tienes una cuenta? inicia sesion</Link>
       </StyledFormCard>
-    </LoginContainer>
+    </RegisterContainer>
   )
 }
-const LoginContainer = styled.div`
+
+const RegisterContainer = styled.div`
   min-height: 100vh;
   width: 90%;
   margin: 0 auto;
@@ -79,11 +116,6 @@ const StyledFormCard = styled.form`
   padding: 30px 10px;
   text-align: center;
 
-  label {
-    color: #323232;
-    grid-column: 1/3;
-  }
-
   input {
     font-size: 1em;
     padding: 3px 5px;
@@ -96,14 +128,7 @@ const StyledFormCard = styled.form`
     border: none;
     border-radius: 5px;
     color: white;
-    grid-row: 3/4;
-    grid-column: 2/3;
-    padding: 10px 0;
-  }
-  a {
-    grid-column: 3/4;
-    align-self: center;
   }
 `
 
-export default Login
+export default Register

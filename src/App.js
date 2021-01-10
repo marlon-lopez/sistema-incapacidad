@@ -10,23 +10,30 @@ import UserInfo from './components/UserInfo'
 import Header from './components/Header'
 import Users from './components/Users'
 import { PrivateRoute, AuthotizedRoute } from './components/PrivateRoute'
+import Register from './components/Register'
+
+import GlobalStyles from './components/GlobalStyles'
 
 export const inputChangeHandler = (e, state, updateState) => {
   updateState({
     ...state,
     [e.target.name]: e.target.value,
   })
-  console.log(e.target.value)
 }
 function App() {
   const { state } = useContext(UserContext)
   return (
     <Router>
-      <Header />
+      <GlobalStyles />
+      {state.isAuthenticated && <Header />}
       <Route path='/login' exact>
         <Login />
       </Route>
-      <PrivateRoute path='/me'>
+      <Route path='/register' exact>
+        <Register />
+      </Route>
+      <PrivateRoute path='/' exact></PrivateRoute>
+      <PrivateRoute path='/me' exact>
         <UserInfo />
       </PrivateRoute>
       {state.user && (
@@ -34,12 +41,12 @@ function App() {
           <AuthotizedRoute path='/users' isAdmin={state.user.isAdmin}>
             <Users />
           </AuthotizedRoute>
-          <AuthotizedRoute path='/forms'>
+          <AuthotizedRoute path='/forms' exact>
             <Forms />
           </AuthotizedRoute>
         </>
       )}
-      <PrivateRoute path='/myforms'>
+      <PrivateRoute path='/myforms' exact>
         <MyForms />
       </PrivateRoute>
     </Router>

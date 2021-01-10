@@ -1,54 +1,55 @@
-import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import { UserContext } from '../context/UserContext'
+//actions
+import { getAllUsers, deleteUser } from '../context/actions/UserActions'
+import styled from 'styled-components'
 import User from './User'
 
 const Users = () => {
-  const { state } = useContext(UserContext)
-  const [users, setUsers] = useState([])
+  const { state, dispatch } = useContext(UserContext)
+  /*   const [users, setUsers] = useState(state.users)
   const [selectedUser, setSelectedUser] = useState()
 
   const seletectedUserHandler = (id) => {
     const selected = users.find((u) => u.id === id)
     setSelectedUser(selected)
-  }
-
-  const getUsers = async () => {
-    try {
-      const { data } = await axios.get('/api/v1/auth/users', {
-        headers: {
-          authorization: `Bearer ${state.token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      setUsers(data.data)
-    } catch (err) {
-      console.log(err)
-    }
+  } */
+  const deleteUserHandler = (id) => {
+    deleteUser(dispatch, state.token, id)
   }
 
   useEffect(() => {
-    getUsers()
+    getAllUsers(dispatch, state.token)
+
     return () => {
-      console.log('cleaned')
+      console.log('unmounted')
     }
   }, [])
 
   return (
     <>
-      {users &&
-        users.map((user) => {
-          return (
-            <User
-              userInfo={user}
-              key={user.id}
-              seletectedUserHandler={seletectedUserHandler}
-              selectedUser={selectedUser}
-            />
-          )
-        })}
+      <h2>Lista de Usuarios</h2>
+      <UsersList>
+        {state.users &&
+          state.users.map((user) => {
+            return (
+              <User
+                userInfo={user}
+                key={user.id}
+                deleteUserHandler={deleteUserHandler}
+              />
+            )
+          })}
+      </UsersList>
     </>
   )
 }
+const UsersList = styled.div`
+  display: grid;
+  width: 90%;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-gap: 20px;
+  margin: 20px auto;
+`
 
 export default Users
