@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
 //actions
 import { getAllUsers, deleteUser } from '../context/actions/UserActions'
@@ -6,32 +6,26 @@ import styled from 'styled-components'
 import User from './User'
 
 const Users = () => {
-  const { state, dispatch } = useContext(UserContext)
-  /*   const [users, setUsers] = useState(state.users)
-  const [selectedUser, setSelectedUser] = useState()
+  const { UserState, dispatch } = useContext(UserContext)
 
-  const seletectedUserHandler = (id) => {
-    const selected = users.find((u) => u.id === id)
-    setSelectedUser(selected)
-  } */
   const deleteUserHandler = (id) => {
-    deleteUser(dispatch, state.token, id)
+    deleteUser(dispatch, UserState.token, id)
   }
 
   useEffect(() => {
-    getAllUsers(dispatch, state.token)
+    getAllUsers(dispatch, UserState.token)
 
     return () => {
       console.log('unmounted')
     }
-  }, [])
+  }, [dispatch, UserState.token])
 
   return (
-    <>
+    <Container>
       <h2>Lista de Usuarios</h2>
       <UsersList>
-        {state.users &&
-          state.users.map((user) => {
+        {UserState.users &&
+          UserState.users.map((user) => {
             return (
               <User
                 userInfo={user}
@@ -41,15 +35,19 @@ const Users = () => {
             )
           })}
       </UsersList>
-    </>
+    </Container>
   )
 }
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+`
 const UsersList = styled.div`
   display: grid;
-  width: 90%;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, 320px);
   grid-gap: 20px;
   margin: 20px auto;
+  justify-content: center;
 `
 
 export default Users

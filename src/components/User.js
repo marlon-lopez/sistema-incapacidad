@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
+//styles
 import styled from 'styled-components'
+import { UserGrid } from './GlobalStyles'
 
 const User = ({ userInfo, deleteUserHandler }) => {
   return (
@@ -29,22 +32,22 @@ const User = ({ userInfo, deleteUserHandler }) => {
 
         <i className='fas fa-pen'></i>
       </div>
+      <Link to={`/forms/${userInfo._id}`}>Incapacidades</Link>
     </StyledUser>
   )
 }
 
-const StyledUser = styled.div`
-  background: #fff;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  filter: drop-shadow(4px 3px 10px rgba(205, 205, 205, 0.38));
-  padding: 15px 30px;
-  grid-gap: 5px;
-  position: relative;
+const StyledUser = styled(UserGrid)`
   .actions {
     margin-top: 10px;
     display: flex;
     justify-content: space-around;
+  }
+  a {
+    margin-top: 10px;
+    font-size: 0.8em;
+    color: #ea4c89;
+    text-align: center;
   }
   i {
     width: 25px;

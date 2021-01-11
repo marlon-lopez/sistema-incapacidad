@@ -9,7 +9,8 @@ const Forms = () => {
   const { dispatch } = useContext(FormContext)
   useEffect(() => {
     getAllForms(dispatch, state.token)
-  }, [])
+    console.log('hh')
+  }, [dispatch, state.token])
   return (
     <div>
       <div className='form-container'></div>

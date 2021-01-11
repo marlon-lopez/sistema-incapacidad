@@ -22,10 +22,14 @@ const reducer = (state, action) => {
         users: null,
       }
     case 'UPDATE_PROFILE':
-      console.log(action.payload)
+      localStorage.setItem(
+        'user',
+        JSON.stringify(action.payload.dataParsed.user),
+      )
       return {
         ...state,
-        user: action.payload.user,
+        user: action.payload.dataParsed.user,
+        userDetails: action.payload.userDetails,
       }
     case 'REGISTER':
       localStorage.setItem('user', JSON.stringify(action.payload.user))
@@ -51,6 +55,11 @@ const reducer = (state, action) => {
         error: null,
         users: null,
       }
+    case 'GET_SINGLE_USER':
+      return {
+        ...state,
+        userDetails: action.payload,
+      }
 
     /*REDUCER FOR ADMINS*/
 
@@ -59,13 +68,6 @@ const reducer = (state, action) => {
         ...state,
         users: action.payload,
       }
-
-    case 'GET_SINGLE_USER':
-      return {
-        ...state,
-        users: action.payload,
-      }
-
     case 'UPDATE_USER':
       return {
         ...state,

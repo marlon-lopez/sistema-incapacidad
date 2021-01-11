@@ -62,6 +62,22 @@ export const logOut = async (dispatch) => {
   })
 }
 
+export const getCurrentUser = async (dispatch, token) => {
+  try {
+    const { data } = await axios.get('/api/v1/auth/me', {
+      headers: { authorization: `Bearer ${token}` },
+    })
+    dispatch({
+      type: 'GET_SINGLE_USER',
+      payload: data.data.user,
+    })
+  } catch (err) {
+    dispatch({
+      type: 'ERROR',
+      payload: err.response.data.message,
+    })
+  }
+}
 export const updateUser = async (dispatch, token, newData) => {
   try {
     const { data } = await axios.put('/api/v1/auth/update', newData, {
@@ -78,10 +94,9 @@ export const updateUser = async (dispatch, token, newData) => {
         isAdmin: data.data.user.isAdmin,
       },
     }
-    console.log(dataParsed)
     dispatch({
       type: 'UPDATE_PROFILE',
-      payload: dataParsed,
+      payload: { dataParsed, userDetails: data.data.user },
     })
   } catch (err) {
     console.log(err)
@@ -111,6 +126,7 @@ export const deleteMyUser = async (dispatch, token) => {
     })
   }
 }
+
 /* ACTIONS FOR ADMIN*/
 
 export const getAllUsers = async (dispatch, token) => {
@@ -141,7 +157,7 @@ export const singleUser = async (dispatch, token, userId) => {
         'Content-Type': 'application/json',
       },
     })
-    dispatch({ type: '' })
+    dispatch({ type: 'GET_SINGLE_USER', payload: data.data.user })
   } catch (err) {}
 }
 

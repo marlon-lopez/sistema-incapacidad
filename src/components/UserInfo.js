@@ -1,124 +1,121 @@
 import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
+import UserInfoEdit from './UserInfoEdit'
+import { useHistory } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+
+import { parsedDate } from '../utils'
+
+//styles
+import styled from 'styled-components'
+import { UserGrid } from './GlobalStyles'
 //actions
-import { updateUser, deleteMyUser } from '../context/actions/UserActions'
+import {
+  getCurrentUser,
+  updateUser,
+  deleteMyUser,
+} from '../context/actions/UserActions'
 
 function UserInfo() {
-  const [userInfo, setUserInfo] = useState(null)
+  const [editing, setEditing] = useState(false)
   const [newUserInfo, setNewUserInfo] = useState(null)
-  const { state, dispatch } = useContext(UserContext)
-
-  const getUserReq = async (token) => {
-    console.log(token)
-    const { data } = await axios.get('/api/v1/auth/me', {
-      headers: { authorization: `Bearer ${token}` },
-    })
-    setUserInfo(data.data.user)
-    setNewUserInfo(data.data.user)
-  }
+  const { UserState, dispatch } = useContext(UserContext)
+  const history = useHistory()
 
   const userChangeHandler = (changes) => {
+    setEditing(true)
     setNewUserInfo({ ...newUserInfo, ...changes })
-    console.log(userInfo)
+    document.body.style.overflow = 'hidden'
+  }
+  const deleteUserHandler = () => {
+    deleteMyUser(dispatch, UserState.token)
+    history.push('/login')
   }
 
   const submitHandler = async (event) => {
     event.preventDefault()
-    updateUser(dispatch, state.token, newUserInfo)
+    updateUser(dispatch, UserState.token, newUserInfo)
+    setEditing(false)
   }
 
   useEffect(() => {
-    console.log(userInfo)
-    console.log(state)
-    getUserReq(state.token)
-    return
-  }, [state])
+    getCurrentUser(dispatch, UserState.token)
+    return () => {
+      console.log('cleaned')
+    }
+  }, [dispatch, UserState.token])
   return (
-    <div>
-      {userInfo && (
-        <div className='profile'>
-          <h4>{userInfo._id}</h4>
-          <h4>{userInfo.name}</h4>
-          <h4>{userInfo.email}</h4>
-          <h4>{userInfo.job}</h4>
-          <h4>{userInfo.dui}</h4>
-          <h4>{userInfo.code}</h4>
-          <h4>{userInfo.startDate}</h4>
-        </div>
+    <UserContainer>
+      {UserState.userDetails && (
+        <StyledProfile>
+          <h4>ID</h4>
+          <p>{UserState.userDetails._id}</p>
+          <h4>Nombre</h4>
+          <p>{UserState.userDetails.name}</p>
+          <h4>Correo Electronico</h4>
+          <p>{UserState.userDetails.email}</p>
+          <h4>Puesto de trabajo</h4>
+          <p>{UserState.userDetails.job}</p>
+          <h4>DUI</h4>
+          <p>{UserState.userDetails.dui}</p>
+          <h4>Codigo</h4>
+          <p>{UserState.userDetails.code}</p>
+          <h4>Fecha de Inicio</h4>
+          <p>{parsedDate(UserState.userDetails.startDate)}</p>
+          <div className='buttons'>
+            <i className='fas fa-trash-alt' onClick={deleteUserHandler} />
+            <i
+              className='fas fa-pen'
+              onClick={() => userChangeHandler({ ...UserState.userDetails })}
+            />
+          </div>
+        </StyledProfile>
       )}
-      {newUserInfo && (
-        <div className='edit-form'>
-          <form onSubmit={submitHandler}>
-            <label>
-              Email Address
-              <input
-                type='email'
-                name='email'
-                id='email'
-                value={newUserInfo.email}
-                onChange={(e) => {
-                  userChangeHandler({ email: e.target.value })
-                }}
-              />
-            </label>
-            <label>
-              Name
-              <input
-                type='text'
-                name='name'
-                id='name'
-                value={newUserInfo.name}
-                onChange={(e) => {
-                  userChangeHandler({ name: e.target.value })
-                }}
-              />
-            </label>
-            <label>
-              Job
-              <input
-                type='text'
-                name='job'
-                id='job'
-                value={newUserInfo.job}
-                onChange={(e) => {
-                  userChangeHandler({ job: e.target.value })
-                }}
-              />
-            </label>
-            <label>
-              DUI
-              <input
-                type='text'
-                name='dui'
-                id='dui'
-                value={newUserInfo.dui}
-                onChange={(e) => {
-                  userChangeHandler({ dui: e.target.value })
-                }}
-              />
-            </label>
-            <label>
-              code
-              <input
-                type='text'
-                name='code'
-                id='code'
-                value={newUserInfo.code}
-                onChange={(e) => {
-                  userChangeHandler({ code: e.target.value })
-                }}
-              />
-            </label>
-            <button>Update</button>
-          </form>
-          <button onClick={() => deleteMyUser(dispatch, state.token)}>
-            Eliminar mi Cuenta
-          </button>
-        </div>
+
+      {editing && (
+        <UserInfoEdit
+          userChangeHandler={userChangeHandler}
+          newUserInfo={newUserInfo}
+          submitHandler={submitHandler}
+          deleteUserHandler={deleteUserHandler}
+          setEditing={setEditing}
+        />
       )}
-    </div>
+    </UserContainer>
   )
 }
+
+const UserContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+  position: relative;
+`
+
+const StyledProfile = styled(UserGrid)`
+  width: 50%;
+  max-width: 1000px;
+  h4,
+  p {
+    align-self: center;
+    margin-top: 10px;
+  }
+  .actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+  }
+  i {
+    width: 25px;
+    height: 25px;
+    margin: 10px 10px 0 0;
+  }
+  i:nth-child(1) {
+    background: #ec4a4a;
+  }
+  i:nth-child(2) {
+    background: #34a1de;
+  }
+`
 
 export default UserInfo

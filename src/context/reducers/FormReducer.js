@@ -1,10 +1,5 @@
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'GET_OWN_FORMS':
-      return {
-        ...state,
-        myForms: action.payload,
-      }
     case 'CREATE_FORM':
       return {
         ...state,
@@ -14,6 +9,21 @@ const reducer = (state, action) => {
       return {
         ...state,
         forms: action.payload,
+      }
+    case 'GET_USER_FORMS':
+      return {
+        ...state,
+        forms: action.payload,
+      }
+    case 'UPDATE_FORM':
+      return {
+        ...state,
+        formDetails: action.payload,
+      }
+    case 'DELETE_FORM':
+      return {
+        ...state,
+        formDetails: action.payload,
       }
     default:
       return {

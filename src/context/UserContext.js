@@ -16,13 +16,14 @@ const initialState = {
   token: tokenFromStorage,
   error: '',
   users: null,
+  userDetails: null,
   success: false,
 }
 
 export const UserProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [UserState, dispatch] = useReducer(reducer, initialState)
   return (
-    <UserContext.Provider value={{ state, dispatch }}>
+    <UserContext.Provider value={{ UserState, dispatch }}>
       {children}
     </UserContext.Provider>
   )

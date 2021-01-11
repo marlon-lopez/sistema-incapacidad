@@ -1,15 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
+import { GridForm } from './GlobalStyles'
 //context
 import { UserContext } from '../context/UserContext'
 //actions
 import { logIn } from '../context/actions/UserActions'
 //components
-import { inputChangeHandler } from '../App'
+import { inputChangeHandler } from '../utils'
 
 const Login = () => {
-  const { state, dispatch } = useContext(UserContext)
+  const { UserState, dispatch } = useContext(UserContext)
   const [userData, setUserData] = useState({
     email: '',
     password: '',
@@ -18,11 +19,11 @@ const Login = () => {
   const history = useHistory()
 
   useEffect(() => {
-    if (state.isAuthenticated) {
+    if (UserState.isAuthenticated) {
       history.push('/')
       return () => {}
     }
-  }, [state.isAuthenticated])
+  }, [UserState.isAuthenticated, history])
 
   const submitHandler = async (e) => {
     e.preventDefault()
@@ -32,7 +33,7 @@ const Login = () => {
   return (
     <LoginContainer>
       <h1>Login</h1>
-      {state.error && <h3>{state.error}</h3>}
+      {UserState.error && <h3>{UserState.error}</h3>}
       <StyledFormCard onSubmit={submitHandler}>
         <label>Correo Electronico</label>
         <input
@@ -53,7 +54,7 @@ const Login = () => {
         />
 
         <button>Iniciar sesion</button>
-        <p>{state.isAuthenticated === true ? state.user.name : ' '}</p>
+        <p>{UserState.isAuthenticated === true ? UserState.user.name : ' '}</p>
         <Link to='/register'> Register</Link>
       </StyledFormCard>
     </LoginContainer>
@@ -71,14 +72,7 @@ const LoginContainer = styled.div`
     color: #ea4c89;
   }
 `
-const StyledFormCard = styled.form`
-  background: white;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 20px;
-  padding: 30px 10px;
-  text-align: center;
-
+const StyledFormCard = styled(GridForm)`
   label {
     color: #323232;
     grid-column: 1/3;

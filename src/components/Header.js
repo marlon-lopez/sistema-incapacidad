@@ -5,39 +5,27 @@ import { UserContext } from '../context/UserContext'
 import { logOut } from '../context/actions/UserActions'
 
 function Header() {
-  const { state, dispatch } = useContext(UserContext)
+  const { UserState, dispatch } = useContext(UserContext)
 
   return (
     <StyledNav>
       <ul>
-        {state.isAuthenticated && (
+        {UserState.isAuthenticated && (
           <>
             <li>
-              <Link to='/myforms'>Mis incapacidades</Link>
+              <Link to={`/myforms/${UserState.user.id}`}>
+                Mis incapacidades
+              </Link>
             </li>
-            {state.user.isAdmin && (
-              <>
-                <li>
-                  <Link to='/form'>Incapacidades</Link>
-                </li>
-                <li>
-                  <Link to='/users'>Usuarios</Link>
-                </li>
-                {/* <li>
-                  <Link to='/forms'>All forms</Link>
-                </li> */}
-              </>
+            {UserState.user.isAdmin && (
+              <li>
+                <Link to='/users'>Usuarios</Link>
+              </li>
             )}
             <li id='me'>
-              <Link to='/me'>{state.user.name}</Link>
+              <Link to='/me'>{UserState.user.name}</Link>
               <ul className='dropdown-menu'>
                 <li>
-                  <Link to='/login' onClick={() => logOut(dispatch)}>
-                    Cerrar Sesion
-                  </Link>
-                  <Link to='/login' onClick={() => logOut(dispatch)}>
-                    Cerrar Sesion
-                  </Link>
                   <Link to='/login' onClick={() => logOut(dispatch)}>
                     Cerrar Sesion
                   </Link>

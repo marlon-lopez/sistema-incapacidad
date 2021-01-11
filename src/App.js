@@ -1,31 +1,24 @@
 import React, { useContext } from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { UserContext } from './context/UserContext'
 
 //components
 import Forms from './components/Forms'
-import MyForms from './components/MyForms'
+import UserForms from './components/UserForms'
 import Login from './components/Login'
 import UserInfo from './components/UserInfo'
 import Header from './components/Header'
 import Users from './components/Users'
 import { PrivateRoute, AuthotizedRoute } from './components/PrivateRoute'
 import Register from './components/Register'
-
 import GlobalStyles from './components/GlobalStyles'
 
-export const inputChangeHandler = (e, state, updateState) => {
-  updateState({
-    ...state,
-    [e.target.name]: e.target.value,
-  })
-}
 function App() {
-  const { state } = useContext(UserContext)
+  const { UserState } = useContext(UserContext)
   return (
     <Router>
       <GlobalStyles />
-      {state.isAuthenticated && <Header />}
+      {UserState.isAuthenticated && <Header />}
       <Route path='/login' exact>
         <Login />
       </Route>
@@ -36,18 +29,21 @@ function App() {
       <PrivateRoute path='/me' exact>
         <UserInfo />
       </PrivateRoute>
-      {state.user && (
+      {UserState.user && (
         <>
-          <AuthotizedRoute path='/users' isAdmin={state.user.isAdmin}>
+          <AuthotizedRoute path='/users' exact isAdmin={UserState.user.isAdmin}>
             <Users />
+          </AuthotizedRoute>
+          <AuthotizedRoute path='/forms/:id' isAdmin={UserState.user.isAdmin}>
+            <UserForms />
           </AuthotizedRoute>
           <AuthotizedRoute path='/forms' exact>
             <Forms />
           </AuthotizedRoute>
         </>
       )}
-      <PrivateRoute path='/myforms' exact>
-        <MyForms />
+      <PrivateRoute path='/myforms/:id' exact>
+        <UserForms />
       </PrivateRoute>
     </Router>
   )
