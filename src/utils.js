@@ -1,14 +1,22 @@
 import { DateTime } from 'luxon'
 
 export const inputChangeHandler = (e, state, updateState) => {
+  /* if (e.target.name === 'isAdmin') {
+    updateState({
+      ...state,
+      [e.target.name]: e.target.checked,
+    })
+    console.log(e.target.checked)
+  } */
   updateState({
     ...state,
-    [e.target.name]: e.target.value,
+    [e.target.name]:
+      e.target.name === 'isAdmin' ? e.target.checked : e.target.value,
   })
 }
 export const parsedDate = (date) => {
   const { c } = DateTime.fromISO(date)
-  return `${c.day}/${c.month}/${c.year}`
+  return `${c.day < 10 ? 0 + c.day + 1 : c.day + 1}/${c.month}/${c.year}`
 }
 export const parsedFormDate = (date) => {
   const { c } = DateTime.fromISO(date)
@@ -18,8 +26,8 @@ export const parsedFormDate = (date) => {
 }
 
 export const countDays = (startDate, endDate) => {
-  const date1 = DateTime.fromISO(startDate)
-  const date2 = DateTime.fromISO(endDate)
+  let date1 = DateTime.fromISO(startDate)
+  let date2 = DateTime.fromISO(endDate)
   const diff = date2.diff(date1, 'days')
   return diff.values.days
 }

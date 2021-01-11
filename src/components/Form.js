@@ -13,11 +13,11 @@ const Form = ({ formInfo, deleteFormHandler, selectFormHandler }) => {
       <h4>Doctor</h4>
       <p>{formInfo.doctor}</p>
       <h4>Fecha de Ingreso</h4>
-      <p>{parsedDate(formInfo.createdAt)}</p>
+      <p>{parsedFormDate(formInfo.createdAt)}</p>
       <h4>Fecha de Inicio</h4>
       <p>{parsedDate(formInfo.startDate)}</p>
       <h4>Fecha de Finalizacion</h4>
-      <p>{parsedDate(formInfo.startDate)}</p>
+      <p>{parsedDate(formInfo.endDate)}</p>
       <h4>Dias</h4>
       <p>
         {countDays(

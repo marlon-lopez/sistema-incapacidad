@@ -50,6 +50,14 @@ export const getUserForms = async (dispatch, token, id, isAdmin) => {
 
 export const updateSingleForm = async (dispatch, token, newData, id) => {
   try {
+    const parsedData = {
+      hospital: newData.hospital,
+      doctor: newData.doctor,
+      startDate: newData.startDate,
+      endDate: newData.endDate,
+      days: newData.days,
+    }
+    console.log(parsedData)
     const { data } = await axios.put(`/api/v1/forms/${id}`, newData, {
       headers: {
         authorization: `Bearer ${token}`,

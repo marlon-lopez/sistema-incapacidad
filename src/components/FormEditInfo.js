@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { GridForm } from './GlobalStyles'
 
-import { countDays, parsedFormDate } from '../utils'
+import { parsedFormDate } from '../utils'
 
 const FormEditInfo = ({
   formChangeHandler,
@@ -53,19 +53,6 @@ const FormEditInfo = ({
           value={parsedFormDate(newFormInfo.endDate)}
           onChange={(e) => {
             formChangeHandler({ endDate: e.target.value })
-          }}
-        />
-        <label>Dias</label>
-        <input
-          type='text'
-          name='days'
-          id='days'
-          value={countDays(
-            parsedFormDate(newFormInfo.startDate),
-            parsedFormDate(newFormInfo.endDate),
-          )}
-          onChange={(e) => {
-            formChangeHandler({ code: e.target.value })
           }}
         />
         <button>Actualizar</button>

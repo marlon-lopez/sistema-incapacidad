@@ -16,6 +16,7 @@ import { countDays } from '../utils'
 
 //styles
 import styled from 'styled-components'
+import { CreateBtn } from './GlobalStyles'
 //components
 import FormEditInfo from './FormEditInfo'
 import CreateForm from './CreateForm'
@@ -49,19 +50,22 @@ const UserForms = () => {
       updateSingleForm(
         FormDispatch,
         UserState.token,
-        newFormInfo,
+        {
+          ...newFormInfo,
+          days: countDays(newFormInfo.startDate, newFormInfo.endDate),
+        },
         newFormInfo._id,
       )
       setEditing(false)
     } else {
-      setForm({
+      console.log(form)
+
+      createForm(FormDispatch, UserState.token, {
         ...form,
         days: countDays(form.startDate, form.endDate),
       })
-      if (form.days) {
-        createForm(FormDispatch, UserState.token, form)
-        setCreating(false)
-      }
+      setCreating(false)
+      setForm({})
     }
   }
   const deleteFormHandler = (id) => {
@@ -88,17 +92,21 @@ const UserForms = () => {
       <FormsList>
         <>
           <div className='user-info'>
-            {FormState.forms.length > 0 && (
+            {FormState.forms.length > 0 ? (
               <>
                 <h4>Nombre: </h4>
                 <p>{FormState.forms[0].user.name}</p>
                 <h4>Codigo: </h4>
                 <p>{FormState.forms[0].user.code}</p>
               </>
+            ) : (
+              <h3>No hay incapacidades para mostrar</h3>
             )}
-            <CreateBtn onClick={() => setCreating(true)}>
-              Crear Incapacidad
-            </CreateBtn>
+            {id === UserState.user.id && (
+              <CreateBtn onClick={() => setCreating(true)}>
+                Crear Incapacidad
+              </CreateBtn>
+            )}
           </div>
         </>
         {FormState.forms.length > 0 &&
@@ -140,14 +148,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-`
-const CreateBtn = styled.button`
-  background: #ea4c89;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 5px;
-  color: white;
-  font-weight: bold;
 `
 
 const FormsList = styled.div`

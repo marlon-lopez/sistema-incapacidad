@@ -44,6 +44,7 @@ const Register = () => {
           type='text'
           name='name'
           id='name'
+          required
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
         <label>Correo electronico</label>
@@ -51,6 +52,7 @@ const Register = () => {
           type='email'
           name='email'
           id='email'
+          required
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
         <label>Contraseña</label>
@@ -58,6 +60,7 @@ const Register = () => {
           type='password'
           name='password'
           id='password'
+          required
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
         <label>DUI</label>
@@ -65,6 +68,7 @@ const Register = () => {
           type='text'
           name='dui'
           id='dui'
+          required
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
 
@@ -73,13 +77,15 @@ const Register = () => {
           type='text'
           name='code'
           id='code'
+          required
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
-        <label>Fecha Ingreso</label>
+        <label>Fecha Ingreso a la Compañia</label>
         <input
           type='Date'
           name='startDate'
           id='startDate'
+          required
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
         <label>Puesto</label>
@@ -87,6 +93,7 @@ const Register = () => {
           type='text'
           name='job'
           id='job'
+          required
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
         <button>Register</button>

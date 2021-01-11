@@ -181,3 +181,24 @@ export const deleteUser = async (dispatch, token, userId) => {
     })
   }
 }
+
+export const createUser = async (dispatch, token, userData) => {
+  try {
+    const { data } = await axios.post('/api/v1/auth/users', userData, {
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+    dispatch({
+      type: 'DELETE_USER',
+      payload: data,
+    })
+    getAllUsers(dispatch, token)
+  } catch (err) {
+    dispatch({
+      type: 'ERROR',
+      payload: err.response.data.message,
+    })
+  }
+}
