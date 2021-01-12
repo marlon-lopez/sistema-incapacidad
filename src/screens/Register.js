@@ -37,7 +37,7 @@ const Register = () => {
   return (
     <RegisterContainer>
       <h1>Register</h1>
-      {UserState.error && <h3>{UserState.error}</h3>}
+      {UserState.error && <h3>Correo ya esta en uso</h3>}
       <StyledFormCard onSubmit={submitHandler}>
         <label>Nombre</label>
         <input
@@ -109,6 +109,10 @@ const RegisterContainer = styled.div`
   margin: 0 auto;
   h1 {
     text-align: center;
+  }
+  h3 {
+    text-align: center;
+    color: #fa4949;
   }
   a {
     text-decoration: none;

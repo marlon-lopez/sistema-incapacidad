@@ -33,7 +33,7 @@ const Login = () => {
   return (
     <LoginContainer>
       <h1>Login</h1>
-      {UserState.error && <h3>{UserState.error}</h3>}
+      {UserState.error && <h3>Correo o contraseña invalida</h3>}
       <StyledFormCard onSubmit={submitHandler}>
         <label>Correo Electronico</label>
         <input
@@ -66,6 +66,10 @@ const LoginContainer = styled.div`
   margin: 0 auto;
   h1 {
     text-align: center;
+  }
+  h3 {
+    text-align: center;
+    color: #fa4949;
   }
   a {
     text-decoration: none;
