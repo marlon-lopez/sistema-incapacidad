@@ -43,7 +43,7 @@ The http request are made with axios
 
 ## Deployment
 
-The App is deployed in Netlify
+The App is deployed in Netlify https://bootcamp-project.netlify.app
 
 Try it out
 
