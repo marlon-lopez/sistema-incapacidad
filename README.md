@@ -35,9 +35,9 @@ The app is made using the **MERN** stack, backend was made with Node Js and Expr
 **Backend repository**
 https://github.com/marlon-lopez/sistema-incapacidad-api
 
-**The state management** is currently using **ContextAPI** and **useState**.
+**The state management** currently using **ContextAPI** and **useState**.
 
-**Date management** is using luxon
+**Date management** using luxon
 
 The http request are made with axios
 
