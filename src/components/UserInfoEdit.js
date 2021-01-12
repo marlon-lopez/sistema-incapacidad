@@ -4,20 +4,20 @@ import { EditForm, CardShadow } from './GlobalStyles'
 
 const UserInfoEdit = ({
   userChangeHandler,
-  newUserInfo,
+  newUser,
   submitHandler,
   setEditing,
 }) => {
   return (
     <CardShadow>
-      <EditForm onSubmit={submitHandler}>
+      <EditForm onSubmit={(e) => submitHandler(e, 'update')}>
         <i className='fas fa-times' onClick={() => setEditing(false)} />
         <label>Correo Electronico</label>
         <input
           type='email'
           name='email'
           id='email'
-          value={newUserInfo.email}
+          value={newUser.email}
           onChange={(e) => {
             userChangeHandler({ email: e.target.value })
           }}
@@ -27,7 +27,7 @@ const UserInfoEdit = ({
           type='text'
           name='name'
           id='name'
-          value={newUserInfo.name}
+          value={newUser.name}
           onChange={(e) => {
             userChangeHandler({ name: e.target.value })
           }}
@@ -37,7 +37,7 @@ const UserInfoEdit = ({
           type='text'
           name='job'
           id='job'
-          value={newUserInfo.job}
+          value={newUser.job}
           onChange={(e) => {
             userChangeHandler({ job: e.target.value })
           }}
@@ -47,7 +47,7 @@ const UserInfoEdit = ({
           type='text'
           name='dui'
           id='dui'
-          value={newUserInfo.dui}
+          value={newUser.dui}
           onChange={(e) => {
             userChangeHandler({ dui: e.target.value })
           }}
@@ -57,7 +57,7 @@ const UserInfoEdit = ({
           type='text'
           name='code'
           id='code'
-          value={newUserInfo.code}
+          value={newUser.code}
           onChange={(e) => {
             userChangeHandler({ code: e.target.value })
           }}

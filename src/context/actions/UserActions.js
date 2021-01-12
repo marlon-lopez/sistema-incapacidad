@@ -202,3 +202,34 @@ export const createUser = async (dispatch, token, userData) => {
     })
   }
 }
+
+export const updateSingleUser = async (dispatch, token, newData, userId) => {
+  try {
+    const { data } = await axios.put(
+      `api/v1/auth/users/${userId}`,
+      {
+        email: newData.email,
+        name: newData.name,
+        job: newData.job,
+        dui: newData.dui,
+        code: newData.code,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+    dispatch({
+      type: 'UPDATE_USER',
+      payload: data.data,
+    })
+    getAllUsers(dispatch, token)
+  } catch (err) {
+    dispatch({
+      type: 'ERROR',
+      payload: err.response.data.message,
+    })
+  }
+}

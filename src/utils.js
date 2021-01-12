@@ -1,13 +1,6 @@
 import { DateTime } from 'luxon'
 
 export const inputChangeHandler = (e, state, updateState) => {
-  /* if (e.target.name === 'isAdmin') {
-    updateState({
-      ...state,
-      [e.target.name]: e.target.checked,
-    })
-    console.log(e.target.checked)
-  } */
   updateState({
     ...state,
     [e.target.name]:

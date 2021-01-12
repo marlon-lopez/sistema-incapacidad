@@ -74,7 +74,7 @@ function UserInfo() {
       {editing && (
         <UserInfoEdit
           userChangeHandler={userChangeHandler}
-          newUserInfo={newUserInfo}
+          newUser={newUserInfo}
           submitHandler={submitHandler}
           deleteUserHandler={deleteUserHandler}
           setEditing={setEditing}
@@ -94,6 +94,7 @@ const UserContainer = styled.div`
 
 const StyledProfile = styled(UserGrid)`
   width: 50%;
+  margin-top: 20px;
   max-width: 1000px;
   h4,
   p {

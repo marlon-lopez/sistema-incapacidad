@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { UserGrid } from './GlobalStyles'
 
-const User = ({ userInfo, deleteUserHandler }) => {
+const User = ({ userInfo, deleteUserHandler, SelectUserHandler }) => {
   return (
     <StyledUser>
       <h4>Nombre</h4>
@@ -30,7 +30,9 @@ const User = ({ userInfo, deleteUserHandler }) => {
           className='fas fa-trash-alt'
           onClick={() => deleteUserHandler(userInfo.id)}></i>
 
-        <i className='fas fa-pen'></i>
+        <i
+          className='fas fa-pen'
+          onClick={() => SelectUserHandler(userInfo.id)}></i>
       </div>
       <Link to={`/forms/${userInfo._id}`}>Incapacidades</Link>
     </StyledUser>

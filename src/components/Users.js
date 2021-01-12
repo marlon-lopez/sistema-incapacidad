@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/UserContext'
 import CreateUser from './CreateUser'
+import UserInfoEdit from './UserInfoEdit'
 //actions
 import {
   getAllUsers,
   deleteUser,
   createUser,
+  updateSingleUser,
 } from '../context/actions/UserActions'
 import styled from 'styled-components'
 import { CreateBtn } from './GlobalStyles'
@@ -18,16 +20,28 @@ const Users = () => {
   const { UserState, dispatch } = useContext(UserContext)
 
   const SelectUserHandler = (id) => {
-    const selectedForm = UserState.users.find((user) => user.id === id)
-    setNewUser(selectedForm)
-    setCreating(true)
+    const selectedUser = UserState.users.find((user) => user.id === id)
+    console.log(selectedUser)
+    setEditing(true)
+    setNewUser(selectedUser)
   }
-  const submitHandler = (event) => {
+  const userChangeHandler = (changes) => {
+    setEditing(true)
+    setNewUser({ ...newUser, ...changes })
+  }
+
+  const submitHandler = (event, action) => {
     event.preventDefault()
-    console.log(newUser)
-    createUser(dispatch, UserState.token, newUser)
-    setCreating(false)
-    setNewUser(null)
+    if (action === 'create') {
+      createUser(dispatch, UserState.token, newUser)
+      setCreating(false)
+      setNewUser(null)
+    }
+    if (action === 'update') {
+      updateSingleUser(dispatch, UserState.token, newUser, newUser.id)
+      setEditing(false)
+      setNewUser(null)
+    }
   }
   const deleteUserHandler = (id) => {
     deleteUser(dispatch, UserState.token, id)
@@ -55,6 +69,7 @@ const Users = () => {
                 userInfo={user}
                 key={user.id}
                 deleteUserHandler={deleteUserHandler}
+                SelectUserHandler={SelectUserHandler}
               />
             )
           })}
@@ -65,6 +80,14 @@ const Users = () => {
           setCreating={setCreating}
           setNewUser={setNewUser}
           newUser={newUser}
+        />
+      )}
+      {editing && (
+        <UserInfoEdit
+          newUser={newUser}
+          submitHandler={submitHandler}
+          setEditing={setEditing}
+          userChangeHandler={userChangeHandler}
         />
       )}
     </Container>
