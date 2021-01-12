@@ -1,25 +1,21 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { GridForm } from './GlobalStyles'
+import { GridForm } from '../components/GlobalStyles'
 //context
 import { UserContext } from '../context/UserContext'
 //actions
-import { registerUser } from '../context/actions/UserActions'
+import { logIn } from '../context/actions/UserActions'
 //components
 import { inputChangeHandler } from '../utils'
 
-const Register = () => {
+const Login = () => {
   const { UserState, dispatch } = useContext(UserContext)
   const [userData, setUserData] = useState({
-    name: '',
     email: '',
     password: '',
-    dui: '',
-    code: '',
-    startDate: '',
-    job: '',
   })
+
   const history = useHistory()
 
   useEffect(() => {
@@ -31,30 +27,23 @@ const Register = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault()
-    registerUser(dispatch, userData)
+    logIn(dispatch, userData)
   }
 
   return (
-    <RegisterContainer>
-      <h1>Register</h1>
+    <LoginContainer>
+      <h1>Login</h1>
       {UserState.error && <h3>{UserState.error}</h3>}
       <StyledFormCard onSubmit={submitHandler}>
-        <label>Nombre</label>
+        <label>Correo Electronico</label>
         <input
           type='text'
-          name='name'
-          id='name'
-          required
-          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
-        />
-        <label>Correo electronico</label>
-        <input
-          type='email'
           name='email'
           id='email'
           required
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
+
         <label>Contraseña</label>
         <input
           type='password'
@@ -63,47 +52,15 @@ const Register = () => {
           required
           onChange={(e) => inputChangeHandler(e, userData, setUserData)}
         />
-        <label>DUI</label>
-        <input
-          type='text'
-          name='dui'
-          id='dui'
-          required
-          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
-        />
 
-        <label>Codigo</label>
-        <input
-          type='text'
-          name='code'
-          id='code'
-          required
-          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
-        />
-        <label>Fecha Ingreso a la Compañia</label>
-        <input
-          type='Date'
-          name='startDate'
-          id='startDate'
-          required
-          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
-        />
-        <label>Puesto</label>
-        <input
-          type='text'
-          name='job'
-          id='job'
-          required
-          onChange={(e) => inputChangeHandler(e, userData, setUserData)}
-        />
-        <button>Register</button>
-        <Link to='/login'>¿Ya tienes una cuenta? inicia sesion</Link>
+        <button>Iniciar sesion</button>
+        <p>{UserState.isAuthenticated === true ? UserState.user.name : ' '}</p>
+        <Link to='/register'> Register</Link>
       </StyledFormCard>
-    </RegisterContainer>
+    </LoginContainer>
   )
 }
-
-const RegisterContainer = styled.div`
+const LoginContainer = styled.div`
   min-height: 100vh;
   width: 90%;
   margin: 0 auto;
@@ -114,8 +71,16 @@ const RegisterContainer = styled.div`
     text-decoration: none;
     color: #ea4c89;
   }
+  @media screen and (max-width: 620px) {
+    width: 100%;
+  }
 `
 const StyledFormCard = styled(GridForm)`
+  label {
+    color: #323232;
+    grid-column: 1/3;
+  }
+
   input {
     font-size: 1em;
     padding: 3px 5px;
@@ -128,7 +93,29 @@ const StyledFormCard = styled(GridForm)`
     border: none;
     border-radius: 5px;
     color: white;
+    grid-row: 3/4;
+    grid-column: 2/3;
+    padding: 10px 0;
+  }
+  a {
+    grid-column: 3/4;
+    align-self: center;
+  }
+  @media screen and (max-width: 620px) {
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-gap: 5px;
+    label {
+      grid-column: 1;
+    }
+    a,
+    button {
+      grid-column: 1;
+    }
+    button {
+      grid-row: 6;
+    }
   }
 `
 
-export default Register
+export default Login

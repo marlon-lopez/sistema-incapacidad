@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import UserInfoEdit from './UserInfoEdit'
+import UserInfoEdit from '../components/UserInfoEdit'
 import { useHistory } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 
@@ -7,7 +7,7 @@ import { parsedDate } from '../utils'
 
 //styles
 import styled from 'styled-components'
-import { UserGrid } from './GlobalStyles'
+import { UserGrid } from '../components/GlobalStyles'
 //actions
 import {
   getCurrentUser,
@@ -39,9 +39,7 @@ function UserInfo() {
 
   useEffect(() => {
     getCurrentUser(dispatch, UserState.token)
-    return () => {
-      console.log('cleaned')
-    }
+    return () => {}
   }, [dispatch, UserState.token])
   return (
     <UserContainer>
@@ -93,9 +91,9 @@ const UserContainer = styled.div`
 `
 
 const StyledProfile = styled(UserGrid)`
-  width: 50%;
   margin-top: 20px;
   max-width: 1000px;
+  border-radius: 3px;
   h4,
   p {
     align-self: center;

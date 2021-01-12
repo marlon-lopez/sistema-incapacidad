@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/UserContext'
-import CreateUser from './CreateUser'
-import UserInfoEdit from './UserInfoEdit'
+import CreateUser from '../components/CreateUser'
+import UserInfoEdit from '../components/UserInfoEdit'
 //actions
 import {
   getAllUsers,
@@ -10,8 +10,8 @@ import {
   updateSingleUser,
 } from '../context/actions/UserActions'
 import styled from 'styled-components'
-import { CreateBtn } from './GlobalStyles'
-import User from './User'
+import { CreateBtn } from '../components/GlobalStyles'
+import User from '../components/User'
 
 const Users = () => {
   const [newUser, setNewUser] = useState(null)
@@ -21,7 +21,6 @@ const Users = () => {
 
   const SelectUserHandler = (id) => {
     const selectedUser = UserState.users.find((user) => user.id === id)
-    console.log(selectedUser)
     setEditing(true)
     setNewUser(selectedUser)
   }
@@ -50,9 +49,7 @@ const Users = () => {
   useEffect(() => {
     getAllUsers(dispatch, UserState.token)
 
-    return () => {
-      console.log('unmounted')
-    }
+    return () => {}
   }, [dispatch, UserState.token])
 
   return (
@@ -97,17 +94,10 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   .user-info {
-    display: grid;
-    grid-template-columns: repeat(3, 320px);
-    grid-gap: 20px;
-    margin: 20px auto;
-    justify-content: center;
-
-    button {
-      grid-column: 3/4;
-      width: 40%;
-      justify-self: end;
-    }
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 60px;
   }
 `
 const UsersList = styled.div`
@@ -116,6 +106,14 @@ const UsersList = styled.div`
   grid-gap: 20px;
   margin: 20px auto;
   justify-content: center;
+
+  @media screen and (max-width: 1050px) {
+    grid-template-columns: repeat(2, 320px);
+  }
+  @media screen and (max-width: 700px) {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
 `
 
 export default Users

@@ -3,14 +3,13 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { UserContext } from './context/UserContext'
 
 //components
-import Forms from './components/Forms'
-import UserForms from './components/UserForms'
-import Login from './components/Login'
-import UserInfo from './components/UserInfo'
+import UserForms from './screens/UserForms'
+import Login from './screens/Login'
+import UserInfo from './screens/UserInfo'
 import Header from './components/Header'
-import Users from './components/Users'
+import Users from './screens/Users'
 import { PrivateRoute, AuthotizedRoute } from './components/PrivateRoute'
-import Register from './components/Register'
+import Register from './screens/Register'
 import GlobalStyles from './components/GlobalStyles'
 
 function App() {
@@ -36,9 +35,6 @@ function App() {
           </AuthotizedRoute>
           <AuthotizedRoute path='/forms/:id' isAdmin={UserState.user.isAdmin}>
             <UserForms />
-          </AuthotizedRoute>
-          <AuthotizedRoute path='/forms' exact>
-            <Forms />
           </AuthotizedRoute>
         </>
       )}

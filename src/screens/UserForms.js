@@ -10,16 +10,16 @@ import {
   createForm,
   deleteForm,
 } from '../context/actions/FormActions'
-import Form from './Form'
+import Form from '../components/Form'
 
 import { countDays } from '../utils'
 
 //styles
 import styled from 'styled-components'
-import { CreateBtn } from './GlobalStyles'
+import { CreateBtn } from '../components/GlobalStyles'
 //components
-import FormEditInfo from './FormEditInfo'
-import CreateForm from './CreateForm'
+import FormEditInfo from '../components/FormEditInfo'
+import CreateForm from '../components/CreateForm'
 
 const UserForms = () => {
   const [editing, setEditing] = useState(false)
@@ -58,8 +58,6 @@ const UserForms = () => {
       )
       setEditing(false)
     } else {
-      console.log(form)
-
       createForm(FormDispatch, UserState.token, {
         ...form,
         days: countDays(form.startDate, form.endDate),
@@ -74,10 +72,7 @@ const UserForms = () => {
 
   useEffect(() => {
     getUserForms(FormDispatch, UserState.token, id, UserState.user.isAdmin)
-    console.log('rendered')
-    return () => {
-      console.log('UserForms unmounted')
-    }
+    return () => {}
   }, [
     FormState.formDetails,
     FormDispatch,
@@ -89,26 +84,24 @@ const UserForms = () => {
 
   return (
     <Container>
+      <div className='user-info'>
+        {FormState.forms.length > 0 ? (
+          <>
+            <h4>Nombre: </h4>
+            <p>{FormState.forms[0].user.name}</p>
+            <h4>Codigo: </h4>
+            <p>{FormState.forms[0].user.code}</p>
+          </>
+        ) : (
+          <h3>No hay incapacidades para mostrar</h3>
+        )}
+        {id === UserState.user.id && (
+          <CreateBtn onClick={() => setCreating(true)}>
+            Crear Incapacidad
+          </CreateBtn>
+        )}
+      </div>
       <FormsList>
-        <>
-          <div className='user-info'>
-            {FormState.forms.length > 0 ? (
-              <>
-                <h4>Nombre: </h4>
-                <p>{FormState.forms[0].user.name}</p>
-                <h4>Codigo: </h4>
-                <p>{FormState.forms[0].user.code}</p>
-              </>
-            ) : (
-              <h3>No hay incapacidades para mostrar</h3>
-            )}
-            {id === UserState.user.id && (
-              <CreateBtn onClick={() => setCreating(true)}>
-                Crear Incapacidad
-              </CreateBtn>
-            )}
-          </div>
-        </>
         {FormState.forms.length > 0 &&
           FormState.forms.map((form) => {
             return (
@@ -147,22 +140,35 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   position: relative;
+
+  .user-info {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 60px;
+    flex-wrap: wrap;
+    h4,
+    p {
+      margin: 10px 10px;
+    }
+  }
 `
 
 const FormsList = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 320px);
+  grid-template-columns: repeat(3, 350px);
   grid-gap: 20px;
-  margin: 20px auto;
+  margin: 40px auto;
   justify-content: center;
-  .user-info {
-    display: flex;
-    justify-content: space-between;
-    grid-column: 1/4;
-    p {
-      margin: 0 15px;
-    }
+
+  @media screen and (max-width: 1050px) {
+    grid-template-columns: repeat(2, 320px);
+  }
+  @media screen and (max-width: 700px) {
+    grid-template-columns: 1fr;
+    justify-items: center;
   }
 `
 

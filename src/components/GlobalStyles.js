@@ -1,19 +1,29 @@
 import styled, { createGlobalStyle } from 'styled-components'
 
 const GlobalStyles = createGlobalStyle`
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-    }
-    html{
-        
-    }
-    body{
-        font-family:"Montserrat",sans-serif;
-        width:100%;
-        background:#F3F8FB;
-    }
+    //base font-size
+$base-font-size: 1rem;
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+  font-size: $base-font-size;
+  @media (min-width: 1100px) {
+    font-size: $base-font-size * 1.3;
+  }
+  @media (min-width: 1366px) {
+    font-size: $base-font-size * 1.5;
+  }
+  @media (min-width: 2560px) {
+    font-size: $base-font-size * 2;
+  }
+}
     h2{
         font-size:2rem;
         text-align:center;
@@ -53,7 +63,13 @@ const GlobalStyles = createGlobalStyle`
     img{
         display:block;
     }
+    //SMALL TABLETS
 
+@media screen and (max-width: 620px) {
+  body {
+    font-size: $base-font-size * 1.1;
+    } 
+  }
 `
 export const GridForm = styled.form`
   background: white;
@@ -62,6 +78,11 @@ export const GridForm = styled.form`
   grid-gap: 20px;
   padding: 30px 10px;
   text-align: center;
+
+  @media screen and (max-width: 620px) {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
 `
 export const UserGrid = styled.div`
   background: #fff;
@@ -85,6 +106,7 @@ export const EditForm = styled(GridForm)`
   top: 30%;
   left: 50%;
   transform: translate(-50%, -30%);
+  padding: 40px 15px;
 
   label {
     color: #323232;

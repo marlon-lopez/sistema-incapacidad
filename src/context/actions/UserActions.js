@@ -2,11 +2,15 @@ import axios from 'axios'
 
 export const registerUser = async (dispatch, userData) => {
   try {
-    const { data } = await axios.post('/api/v1/auth/register', userData, {
-      headers: {
-        'Content-Type': 'application/json',
+    const { data } = await axios.post(
+      'https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/register',
+      userData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
     const dataParsed = await {
       user: {
         id: data.data._id,
@@ -30,10 +34,13 @@ export const registerUser = async (dispatch, userData) => {
 
 export const logIn = async (dispatch, { email, password }) => {
   try {
-    const { data } = await axios.post('/api/v1/auth/login', {
-      email: email,
-      password: password,
-    })
+    const { data } = await axios.post(
+      'https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/login',
+      {
+        email: email,
+        password: password,
+      },
+    )
     const dataParsed = await {
       user: {
         id: data.data._id,
@@ -64,9 +71,12 @@ export const logOut = async (dispatch) => {
 
 export const getCurrentUser = async (dispatch, token) => {
   try {
-    const { data } = await axios.get('/api/v1/auth/me', {
-      headers: { authorization: `Bearer ${token}` },
-    })
+    const { data } = await axios.get(
+      'https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/me',
+      {
+        headers: { authorization: `Bearer ${token}` },
+      },
+    )
     dispatch({
       type: 'GET_SINGLE_USER',
       payload: data.data.user,
@@ -80,12 +90,16 @@ export const getCurrentUser = async (dispatch, token) => {
 }
 export const updateUser = async (dispatch, token, newData) => {
   try {
-    const { data } = await axios.put('/api/v1/auth/update', newData, {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    const { data } = await axios.put(
+      'https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/update',
+      newData,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
     const dataParsed = await {
       user: {
         id: data.data.user._id,
@@ -99,7 +113,6 @@ export const updateUser = async (dispatch, token, newData) => {
       payload: { dataParsed, userDetails: data.data.user },
     })
   } catch (err) {
-    console.log(err)
     dispatch({
       type: 'ERROR',
       payload: err.response.data.message,
@@ -109,12 +122,15 @@ export const updateUser = async (dispatch, token, newData) => {
 
 export const deleteMyUser = async (dispatch, token) => {
   try {
-    await axios.delete('/api/v1/auth/me', {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    await axios.delete(
+      'https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/me',
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
     dispatch({
       type: 'DELETE_MY_USER',
       payload: {},
@@ -131,12 +147,15 @@ export const deleteMyUser = async (dispatch, token) => {
 
 export const getAllUsers = async (dispatch, token) => {
   try {
-    const { data } = await axios.get('/api/v1/auth/users', {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    const { data } = await axios.get(
+      'https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/users',
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
     dispatch({
       type: 'USER_LIST',
       payload: data.data,
@@ -151,24 +170,30 @@ export const getAllUsers = async (dispatch, token) => {
 
 export const singleUser = async (dispatch, token, userId) => {
   try {
-    const { data } = await axios.get(`/api/v1/auth/users/${userId}`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    const { data } = await axios.get(
+      `https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/users/${userId}`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
     dispatch({ type: 'GET_SINGLE_USER', payload: data.data.user })
   } catch (err) {}
 }
 
 export const deleteUser = async (dispatch, token, userId) => {
   try {
-    await axios.delete(`/api/v1/auth/users/${userId}`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    await axios.delete(
+      `https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/users/${userId}`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
     dispatch({
       type: 'DELETE_USER',
       payload: {},
@@ -184,12 +209,16 @@ export const deleteUser = async (dispatch, token, userId) => {
 
 export const createUser = async (dispatch, token, userData) => {
   try {
-    const { data } = await axios.post('/api/v1/auth/users', userData, {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    const { data } = await axios.post(
+      'https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/users',
+      userData,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
     dispatch({
       type: 'DELETE_USER',
       payload: data,
@@ -206,7 +235,7 @@ export const createUser = async (dispatch, token, userData) => {
 export const updateSingleUser = async (dispatch, token, newData, userId) => {
   try {
     const { data } = await axios.put(
-      `api/v1/auth/users/${userId}`,
+      `https://sistema-incapacidad-api.herokuapp.com/api/v1/auth/users/${userId}`,
       {
         email: newData.email,
         name: newData.name,
