@@ -37,6 +37,8 @@ https://github.com/marlon-lopez/sistema-incapacidad-api
 
 **The state management** is currently using **ContextAPI** and **useState**.
 
+**Date management** is using luxon
+
 The http request are made with axios
 
 **Styles** were made with **Styled-Components**
